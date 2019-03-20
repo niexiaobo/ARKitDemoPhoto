@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		929BB04B2240F2C6006E4885 /* BXSCNVector3 + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929BB0482240F2C5006E4885 /* BXSCNVector3 + Extension.swift */; };
+		929BB04C2240F2C6006E4885 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929BB0492240F2C5006E4885 /* Line.swift */; };
+		929BB04D2240F2C6006E4885 /* BXARSCNView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929BB04A2240F2C6006E4885 /* BXARSCNView+Extension.swift */; };
+		929BB04F2241D6F5006E4885 /* tempdata in Resources */ = {isa = PBXBuildFile; fileRef = 929BB04E2241D6F5006E4885 /* tempdata */; };
+		929BB0512241D957006E4885 /* homedata in Resources */ = {isa = PBXBuildFile; fileRef = 929BB0502241D957006E4885 /* homedata */; };
+		929BB0532241E98F006E4885 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929BB0522241E98F006E4885 /* HomePage.swift */; };
 		92BCDFC01FC6B8D00070C55C /* timg2kuang.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 92BCDFBD1FC6B8D00070C55C /* timg2kuang.jpg */; };
 		92BCDFC11FC6B8D00070C55C /* timgKuang.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 92BCDFBE1FC6B8D00070C55C /* timgKuang.jpg */; };
 		92BCDFC21FC6B8D00070C55C /* timg3Kuang.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 92BCDFBF1FC6B8D00070C55C /* timg3Kuang.jpg */; };
@@ -21,6 +27,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		929BB0482240F2C5006E4885 /* BXSCNVector3 + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BXSCNVector3 + Extension.swift"; sourceTree = "<group>"; };
+		929BB0492240F2C5006E4885 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		929BB04A2240F2C6006E4885 /* BXARSCNView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BXARSCNView+Extension.swift"; sourceTree = "<group>"; };
+		929BB04E2241D6F5006E4885 /* tempdata */ = {isa = PBXFileReference; lastKnownFileType = text; path = tempdata; sourceTree = "<group>"; };
+		929BB0502241D957006E4885 /* homedata */ = {isa = PBXFileReference; lastKnownFileType = text; path = homedata; sourceTree = "<group>"; };
+		929BB0522241E98F006E4885 /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
 		92BCDFBD1FC6B8D00070C55C /* timg2kuang.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = timg2kuang.jpg; sourceTree = "<group>"; };
 		92BCDFBE1FC6B8D00070C55C /* timgKuang.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = timgKuang.jpg; sourceTree = "<group>"; };
 		92BCDFBF1FC6B8D00070C55C /* timg3Kuang.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = timg3Kuang.jpg; sourceTree = "<group>"; };
@@ -85,7 +97,13 @@
 				92DCF9C61FBD30890058157D /* LaunchScreen.storyboard */,
 				92DCF9C91FBD30890058157D /* Info.plist */,
 				92DCF9D11FBD64EA0058157D /* ArtTreeViewController.swift */,
+				929BB04A2240F2C6006E4885 /* BXARSCNView+Extension.swift */,
+				929BB0482240F2C5006E4885 /* BXSCNVector3 + Extension.swift */,
+				929BB0492240F2C5006E4885 /* Line.swift */,
 				92DCF9D31FBD666C0058157D /* Stickers.xcstickers */,
+				929BB04E2241D6F5006E4885 /* tempdata */,
+				929BB0502241D957006E4885 /* homedata */,
+				929BB0522241E98F006E4885 /* HomePage.swift */,
 			);
 			path = "AR-Swift_test";
 			sourceTree = "<group>";
@@ -151,10 +169,12 @@
 			files = (
 				92DCF9D81FBD66A30058157D /* sun-halo.png in Resources */,
 				92DCF9D41FBD666C0058157D /* Stickers.xcstickers in Resources */,
+				929BB04F2241D6F5006E4885 /* tempdata in Resources */,
 				92DCF9C81FBD30890058157D /* LaunchScreen.storyboard in Resources */,
 				92DCF9C51FBD30890058157D /* Assets.xcassets in Resources */,
 				92BCDFC11FC6B8D00070C55C /* timgKuang.jpg in Resources */,
 				92BCDFC01FC6B8D00070C55C /* timg2kuang.jpg in Resources */,
+				929BB0512241D957006E4885 /* homedata in Resources */,
 				92DCF9C31FBD30890058157D /* Main.storyboard in Resources */,
 				92BCDFC21FC6B8D00070C55C /* timg3Kuang.jpg in Resources */,
 			);
@@ -168,8 +188,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				92DCF9C01FBD30890058157D /* ViewController.swift in Sources */,
+				929BB04B2240F2C6006E4885 /* BXSCNVector3 + Extension.swift in Sources */,
+				929BB04D2240F2C6006E4885 /* BXARSCNView+Extension.swift in Sources */,
 				92DCF9BE1FBD30890058157D /* AppDelegate.swift in Sources */,
 				92DCF9D21FBD64EA0058157D /* ArtTreeViewController.swift in Sources */,
+				929BB0532241E98F006E4885 /* HomePage.swift in Sources */,
+				929BB04C2240F2C6006E4885 /* Line.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,12 +348,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = TPMZ9F66GE;
 				INFOPLIST_FILE = "AR-Swift_test/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "NXB.AR-Swift-test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = DevelopmentWildcardnot1;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
