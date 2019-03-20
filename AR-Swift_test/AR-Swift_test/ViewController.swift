@@ -6,7 +6,7 @@ import ARKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var sceneV: ARSCNView!
-    @IBOutlet weak var InfoL: UILabel!//这个label的命名大家不要介意,手残了
+    @IBOutlet weak var InfoL: UILabel!
     @IBOutlet weak var targetIM: UIImageView!
     var session = ARSession()
     var configuration = ARWorldTrackingConfiguration()
@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     var lengData = Double()
     
     //必备
-//    let arSCNView = ARSCNView()
+    //    let arSCNView = ARSCNView()
     let arSession = ARSession()
     let arConfiguration = ARWorldTrackingConfiguration()
     
@@ -34,7 +34,7 @@ class ViewController: UIViewController {
     let ArtPicNode = SCNNode()
     
     let ArtPicHaloNode = SCNNode()//光晕
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -58,12 +58,14 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.setUp()
         
+        alertShowBegin()
     }
     func setUp()  {
         sceneV.delegate = self
         sceneV.session = session
         InfoL.text = "环境初始化中"
         targetIM.image = UIImage(named: "GreenTarget")
+        
         
     }
     
@@ -79,9 +81,17 @@ class ViewController: UIViewController {
         
     }
     func reset(){
+        for line in lines {
+            line.remove()
+        }
+        lines.removeAll()
+        currentLine?.remove()
+        
         isMeasuring = true
         vectorStart = SCNVector3()
         vectorEnd = SCNVector3()
+        
+        //scanWorld()
     }
     func scanWorld(){
         //相机位置
@@ -102,6 +112,8 @@ class ViewController: UIViewController {
             vectorEnd = worldPosition
             currentLine?.update(to: vectorEnd)
             InfoL.text = currentLine?.distance(to: vectorEnd) ?? "..."
+            
+            print("移动中..")
         }
     }
     
@@ -112,9 +124,10 @@ class ViewController: UIViewController {
     //点击屏幕开始测试
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        if !isMeasuring {
-            reset()
+        if !isMeasuring && canMeasure {
             isMeasuring = true
+            reset()
+            scanWorld()
             targetIM.image = UIImage(named: "GreenTarget")
             restB.titleLabel?.text = "点击屏幕结束测量"
         }else{
@@ -125,30 +138,13 @@ class ViewController: UIViewController {
                 lengData = (InfoL.text! as NSString).doubleValue
                 print(lengData)
                 
+                alertShowEnd(leng: InfoL.text ?? "1")
+                //clickInputBtn()
                 
-//                sceneV.delegate = nil
-//                for sub in self.view.subviews {
-//                    sub.removeFromSuperview()
-//                }
-//                sceneV.removeFromSuperview()
-//
-                session.pause()
-                
-                InfoL.isHidden = true
-                restB.isHidden = true
-                targetIM.isHidden = true
-                
-                arConfiguration.isLightEstimationEnabled = true//自适应灯光（室內到室外的話 畫面會比較柔和）
-                arSession.run(arConfiguration, options: [.removeExistingAnchors,.resetTracking])
-                
-                //开始挂画
-                self.arIndex = 0
-                showPic()
             }
             
         }
     }
-    
     
     
     
@@ -172,16 +168,19 @@ class ViewController: UIViewController {
     func initNode()  {
         //1.设置几何
         //ArtPicNode.geometry = SCNSphere(radius: 3) //球形
-        //图片
+        //图片 45 60 | 60 50 | 80 55
         var boxW: CGFloat = 0.5
         var boxH: CGFloat = 0.5
         let boxL: CGFloat = 0.01
         if self.arIndex == 0 {
-            boxH = 0.5
-        } else if self.arIndex == 1 {
+            boxW = 0.45
             boxH = 0.6
+        } else if self.arIndex == 1 {
+            boxW = 0.6
+            boxH = 0.5
         } else if self.arIndex == 2 {
-            boxW = 1
+            boxW = 0.8
+            boxH = 0.55
         }
         
         //创建一个长方体,用来展示图片
@@ -306,6 +305,145 @@ class ViewController: UIViewController {
         
         return sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ))
     }
+    
+    
+    //弹出带有输入框的提示框
+    func alertShowBegin() {
+        let view = UserView(alertViewStyle: .Default, title: "开始测距", message: "测量您的位置与墙面之间的距离 : 点击屏幕开始, 完成后点击屏幕结束测量")
+        view.messageHeight = 90
+        view.titleFont = UIFont.systemFont(ofSize: 20)
+        view.titleColor = UIColor.darkText
+        
+        view.messageFont = UIFont.systemFont(ofSize: 18)
+        view.messageColor = UIColor.orange
+        
+        view.titleTopMargin = 6
+        view.messageWithButtonMargin = 6
+        
+        view.cancelButtonColor = UIColor.blue
+        view.cancelButtonTitleColor = UIColor.white
+        view.buttonColor = UIColor.orange
+        view.buttonTitleColor = UIColor.white
+        //view.buttonLayerBorderColor = UIColor.blue
+        
+        let cancel = AEAlertAction(title: "手动输入", style: .Cancel) { (action) in
+            view.close()
+            
+            self.clickInputBtn()
+            print("cancel 点击")
+        }
+        view.addAction(action: cancel)
+        
+        let confirm = AEAlertAction(title: "开始测量", style: .Default) { (action) in
+            view.close()
+            self.canMeasure = true
+            print("confirm 点击")
+        }
+        view.addAction(action: confirm)
+        
+        view.show()
+    }
+    
+    //弹出带有输入框的提示框
+    func alertShowEnd(leng: String) {
+        let lengStr = "请正面朝向墙面! 您的位置与墙面的距离:" + leng + "米"
+        
+        let view = UserView(alertViewStyle: .Default, title: "测量结果", message: lengStr)
+        view.messageHeight = 50
+        let cancel = AEAlertAction(title: "确定", style: .Cancel) { (action) in
+            view.close()
+            self.reset()
+            self.isMeasuring = false
+            self.canMeasure = false
+            self.showPicBegin()
+            print("cancel 点击")
+        }
+        view.addAction(action: cancel)
+        
+        let confirm = AEAlertAction(title: "重新测量", style: .Default) { (action) in
+            view.close()
+//            self.reset()
+            self.isMeasuring = false
+            self.canMeasure = true
+            print("confirm 点击")
+        }
+        view.addAction(action: confirm)
+        
+        let other = AEAlertAction(title: "手动输入", style: .Default) { (action) in
+            view.close()
+            print("other 点击")
+            self.clickInputBtn()
+        }
+        view.addAction(action: other)
+        
+        view.show()
+    }
+    
+    //弹出带有输入框的提示框
+    func clickInputBtn() {
+        
+        //初始化UITextField
+        var inputText:UITextField = UITextField();
+        inputText.keyboardType = UIKeyboardType.numberPad
+        
+        let msgAlertCtr = UIAlertController.init(title:"手动输入",message:"请输入到墙面的距离,示例:1.2 表示 一米二",preferredStyle:.alert)
+        
+        let ok = UIAlertAction.init(title:"确定",style:.default){(action:UIAlertAction)->()in
+            
+            if((inputText.text) != ""){
+                self.reset()
+                self.isMeasuring = false
+                self.canMeasure = false
+                //判断是否是合法数据
+                self.lengData = 100.0 * (inputText.text! as NSString).doubleValue
+                self.showPicBegin()
+            }
+        }
+        
+        let cancel = UIAlertAction.init(title:"取消",style:.cancel){(action:UIAlertAction)->()in
+            
+            print("取消输入")
+            
+        }
+        
+        msgAlertCtr.addAction(ok)
+        
+        msgAlertCtr.addAction(cancel)
+        
+        //添加textField输入框
+        
+        msgAlertCtr.addTextField { (textField)in
+            
+            //设置传入的textField为初始化UITextField
+            
+            inputText = textField
+            
+            inputText.placeholder = "输入数据"
+            
+        }
+        
+        //设置到当前视图
+        
+        self.present(msgAlertCtr, animated: true,completion:nil)
+        
+    }
+    
+
+        func showPicBegin() {
+                session.pause()
+
+                InfoL.isHidden = true
+                restB.isHidden = true
+                targetIM.isHidden = true
+
+                arConfiguration.isLightEstimationEnabled = true//自适应灯光（室內到室外的話 畫面會比較柔和）
+                arSession.run(arConfiguration, options: [.removeExistingAnchors,.resetTracking])
+
+                //开始挂画
+                self.arIndex = 0
+
+                showPic()
+        }
 
 }
 extension ViewController:ARSCNViewDelegate{
