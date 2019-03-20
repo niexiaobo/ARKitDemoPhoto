@@ -160,9 +160,11 @@ class ViewController: UIViewController {
         
         self.initNode()
         self.addLight()
-        for i in 0..<6{
-            self.addBtns(index: i)
-        }
+//        for i in 0..<6{
+//            self.addBtns(index: i)
+//        }
+        
+        addGestureRec()
     }
     //MARK:初始化节点信息
     func initNode()  {
@@ -192,7 +194,6 @@ class ViewController: UIViewController {
         ArtPicNode.geometry?.firstMaterial?.multiply.intensity = 0.5 //強度
         ArtPicNode.geometry?.firstMaterial?.lightingModel = SCNMaterial.LightingModel.constant
         
-        
         //3.设置位置
         ArtPicNode.position = SCNVector3(0, 0.5, lengData * -0.01)
         //添加长方体到界面上
@@ -200,6 +201,60 @@ class ViewController: UIViewController {
         
     }
     
+    func addGestureRec() {
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.handleGesture(_:)))
+        swipeRight.direction = .right
+        self.sceneV.addGestureRecognizer(swipeRight)
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.handleGesture(_:)))
+        swipeLeft.direction = .left
+        self.sceneV.addGestureRecognizer(swipeLeft)
+        let swipeForward = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.handleGesture(_:)))
+        swipeForward.direction = .up
+        self.sceneV.addGestureRecognizer(swipeForward)
+        let swipeBackward = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.handleGesture(_:)))
+        swipeBackward.direction = .down
+        self.sceneV.addGestureRecognizer(swipeBackward)
+    }
+    
+    // 1
+    @objc func handleGesture(_ sender: UISwipeGestureRecognizer) {
+        
+        switch sender.direction {
+        case UISwipeGestureRecognizerDirection.left:
+            moveUpTo(state: "left")
+        case UISwipeGestureRecognizerDirection.up:
+            moveUpTo(state: "up")
+            
+        case UISwipeGestureRecognizerDirection.down:
+            moveUpTo(state: "down")
+            
+        case UISwipeGestureRecognizerDirection.right:
+            moveUpTo(state: "right")
+        
+        default:
+            break
+        }
+    }
+    
+    @objc func moveUpTo(state : String){
+        
+        var vector = SCNVector3.init()
+        vector = ArtPicNode.position
+        
+        let dat: Float = 0.1
+        //["左","上","下","右","前","后","添加"]
+        if (state == "left") {
+            vector.x = vector.x - dat
+        } else if (state == "up") {
+            vector.y += dat
+        } else if (state == "down") {
+            vector.y -= dat
+        } else if (state == "right") {
+            vector.x+=dat
+        }
+        ArtPicNode.position = vector;
+        
+    }
     
     func addLight() {
         
@@ -297,6 +352,8 @@ class ViewController: UIViewController {
         ArtPicNode.position = vector;
         
     }
+    
+    
     
     func distance(form vector:SCNVector3) -> Float {
         let distanceX = ArtPicNode.position.x - vector.x
@@ -440,7 +497,7 @@ class ViewController: UIViewController {
                 arSession.run(arConfiguration, options: [.removeExistingAnchors,.resetTracking])
 
                 //开始挂画
-                self.arIndex = 0
+                //self.arIndex = 0
 
                 showPic()
         }

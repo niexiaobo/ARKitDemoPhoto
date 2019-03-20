@@ -23,26 +23,26 @@ class HomePage: UIViewController,ARSCNViewDelegate {
     @IBAction func gotoArtPic(_ sender: Any) {
         let story = UIStoryboard(name: "Main", bundle: nil)
         let ArtTreeView = story.instantiateViewController(withIdentifier: "ViewControllerID")
-        //ArtTreeView.arIndex = 0;
-        
-        
+        let vc = ArtTreeView as! ViewController
+        vc.arIndex = 0
         self.navigationController?.pushViewController(ArtTreeView, animated: true)
     }
     @IBAction func gotoArtPic1(_ sender: Any) {
         let story = UIStoryboard(name: "Main", bundle: nil)
         let ArtTreeView = story.instantiateViewController(withIdentifier: "ViewControllerID")
-        //ArtTreeView.arIndex = 1;
+        let vc = ArtTreeView as! ViewController
+        vc.arIndex = 1
         self.navigationController?.pushViewController(ArtTreeView, animated: true)
     }
     @IBAction func gotoArtPic2(_ sender: Any) {
-        let AlertVVC = AlertViewController()
+//        let AlertVVC = AlertViewController()
         
-        
-//        let story = UIStoryboard(name: "Main", bundle: nil)
-//        let ArtTreeView = story.instantiateViewController(withIdentifier: "ViewControllerID")
-        
+        let story = UIStoryboard(name: "Main", bundle: nil)
+        let ArtTreeView = story.instantiateViewController(withIdentifier: "ViewControllerID")
+        let vc = ArtTreeView as! ViewController
+        vc.arIndex = 2
         //ArtTreeView.arIndex = 2;
-        self.navigationController?.pushViewController(AlertVVC, animated: true)
+        self.navigationController?.pushViewController(ArtTreeView, animated: true)
     }
     
 }
